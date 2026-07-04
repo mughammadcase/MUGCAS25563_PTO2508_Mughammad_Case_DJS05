@@ -1,0 +1,41 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.content {
+  padding: 1rem;
+}
+
+.title {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.seasons,
+.updated {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.genreTag {
+  padding: 0.4rem 0.6rem;
+  border-radius: 999px;
+  background-color: #f3f4f6;
+  font-size: 0.75rem;
+}
