@@ -6,7 +6,8 @@ import { formatDate } from "../utils/formatDate";
 import styles from "../styles/ShowDetails.module.css";
 
 /**
- * Displays information about a selected podcast, including its summary, season information, and episodes.
+ * Displays information about a selected podcast, including its summary,
+ * season information, and episodes.
  *
  * @returns {JSX.Element}
  */
@@ -72,6 +73,7 @@ export default function ShowDetails() {
 
   return (
     <main className={styles.page}>
+      {/* Podcast Summary */}
       <section className={styles.summaryCard}>
         <img
           src={podcast.image}
@@ -115,6 +117,7 @@ export default function ShowDetails() {
         </div>
       </section>
 
+      {/* Current Season */}
       <section className={styles.content}>
         <div className={styles.sectionHeader}>
           <h2>Current Season</h2>
@@ -133,46 +136,56 @@ export default function ShowDetails() {
         </div>
 
         <section className={styles.seasonCard}>
-          <img
-            src={season.image}
-            alt={season.title}
-            className={styles.seasonImage}
-          />
+          {/* Season Summary */}
+          <div className={styles.seasonSummary}>
+            <img
+              src={season.image}
+              alt={season.title}
+              className={styles.seasonImage}
+            />
 
-          <div className={styles.seasonInfo}>
-            <h3>{season.title}</h3>
+            <div className={styles.seasonInfo}>
+              <h3>{season.title}</h3>
 
-            <p className={styles.seasonDescription}>{season.description}</p>
+              <p className={styles.seasonDescription}>{season.description}</p>
+
+              <p className={styles.seasonMeta}>
+                {season.episodes.length} Episodes • {updatedDate}
+              </p>
+            </div>
+          </div>
+
+          {/* Episode List */}
+          <div className={styles.episodesSection}>
+            <ul className={styles.episodeGrid}>
+              {season.episodes.map((episode) => {
+                const description = episode.description || "";
+
+                return (
+                  <li key={episode.episode} className={styles.episodeCard}>
+                    <img
+                      src={season.image}
+                      alt={season.title}
+                      className={styles.episodeImage}
+                    />
+
+                    <div className={styles.episodeContent}>
+                      <h3>
+                        Episode {episode.episode}: {episode.title}
+                      </h3>
+
+                      <p>
+                        {description.length > 200
+                          ? `${description.slice(0, 200)}...`
+                          : description || "No description available."}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
-
-        <ul className={styles.episodeGrid}>
-          {season.episodes.map((episode) => {
-            const description = episode.description || "";
-
-            return (
-              <li key={episode.episode} className={styles.episodeCard}>
-                <img
-                  src={season.image}
-                  alt={season.title}
-                  className={styles.episodeImage}
-                />
-
-                <div className={styles.episodeContent}>
-                  <h3>
-                    Episode {episode.episode}: {episode.title}
-                  </h3>
-
-                  <p>
-                    {description.length > 200
-                      ? `${description.slice(0, 200)}...`
-                      : description || "No description available."}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
       </section>
     </main>
   );
