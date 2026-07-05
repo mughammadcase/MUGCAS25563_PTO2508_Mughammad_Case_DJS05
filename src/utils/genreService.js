@@ -11,7 +11,7 @@ export const genreService = {
    * @param {number[]} genreIds - Array of genre IDs.
    * @returns {string[]} Array of genre titles.
    */
-  getNames(genreIds) {
+  getNames(genreIds = []) {
     return genreIds.map(
       (id) => genres.find((g) => g.id === id)?.title || "Unknown",
     );

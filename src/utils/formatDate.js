@@ -10,12 +10,13 @@ export const formatDate = {
    * @param {string} dateStr - ISO date string received from the podcast API.
    * @returns {string} Formatted date string.
    */
-  format(dateStr) {
-    const date = new Date(dateStr);
-    return `${date.toLocaleDateString("en-US", {
+  format(date) {
+    if (!date) return "Unknown";
+
+    return new Date(date).toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    })}`;
+    });
   },
 };
