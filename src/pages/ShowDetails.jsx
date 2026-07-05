@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchPodcastById } from "../api/fetchPodcasts";
+import { PodcastContext } from "../context/PodcastContext";
 import { genreService } from "../utils/genreService";
 import { formatDate } from "../utils/formatDate";
 import styles from "../styles/ShowDetails.module.css";
@@ -14,6 +15,7 @@ import styles from "../styles/ShowDetails.module.css";
 export default function ShowDetails() {
   const { id } = useParams();
 
+  const { allPodcasts } = useContext(PodcastContext);
   const [podcast, setPodcast] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,8 @@ export default function ShowDetails() {
   // The currently selected season based on the dropdown selection.
   const season = podcast?.seasons[selectedSeason];
 
-  const genreNames = podcast ? genreService.getNames(podcast.genres) : [];
+  const previewPodcast = allPodcasts.find((item) => item.id === id);
+  const genreNames = genreService.getNames(previewPodcast?.genres ?? []);
   const updatedDate = podcast ? formatDate.format(podcast.updated) : "";
 
   // Calculates the total number of episodes across every season.
@@ -73,7 +76,7 @@ export default function ShowDetails() {
 
   return (
     <main className={styles.page}>
-      {/* Podcast Summary */}
+      {/* Podcast Summary Card */}
       <section className={styles.summaryCard}>
         <img
           src={podcast.image}
@@ -116,7 +119,6 @@ export default function ShowDetails() {
           </div>
         </div>
       </section>
-
       {/* Current Season */}
       <section className={styles.content}>
         <div className={styles.sectionHeader}>

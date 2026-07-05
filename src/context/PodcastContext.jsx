@@ -86,6 +86,7 @@ export function PodcastProvider({ children }) {
   }, [searchTitle, sortOrder, selectedGenre]);
 
   const value = {
+    allPodcasts,
     podcasts,
     loading,
     error,
