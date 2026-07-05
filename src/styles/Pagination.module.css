@@ -16,9 +16,9 @@
 }
 
 .navButton {
-  border: 1px solid #d1d5db;
-  background-color: #ffffff;
-  color: #111827;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   padding: 0.7rem 1rem;
   border-radius: 999px;
   font-size: 0.95rem;
@@ -29,7 +29,7 @@
 }
 
 .navButton:hover:not(:disabled) {
-  background-color: #f3f4f6;
+  background-color: var(--color-background);
 }
 
 .navButton:disabled {
@@ -41,9 +41,9 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  border: 1px solid #d1d5db;
-  background-color: #ffffff;
-  color: #111827;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,9 +58,9 @@
 }
 
 .activeDot {
-  background-color: #111827;
-  color: #ffffff;
-  border-color: #111827;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border-color: var(--color-primary);
 }
 
 .dotNumber {
