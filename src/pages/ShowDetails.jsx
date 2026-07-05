@@ -12,6 +12,7 @@ export default function ShowDetails() {
 
   const [podcast, setPodcast] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(0);
+  const season = podcast?.seasons[selectedSeason];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -68,6 +69,17 @@ export default function ShowDetails() {
       </select>
 
       <p>{podcast.description}</p>
+
+      <h2>Episodes</h2>
+
+      <ul>
+        {season.episodes.map((episode) => (
+          <li key={episode.episode}>
+            <h3>{episode.title}</h3>
+            <p>{episode.description}</p>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
