@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { genreService } from "../../utils/genreService";
 import { formatDate } from "../../utils/formatDate";
 import styles from "../../styles/PodcastCard.module.css";
@@ -20,26 +21,28 @@ export default function PodcastCard({ podcast }) {
   const updatedDate = formatDate.format(podcast.updated);
 
   return (
-    <article className={styles.card}>
-      <img src={podcast.image} alt={podcast.title} className={styles.image} />
+    <Link to={`/show/${podcast.id}`} className={styles.cardLink}>
+      <article className={styles.card}>
+        <img src={podcast.image} alt={podcast.title} className={styles.image} />
 
-      <div className={styles.content}>
-        <h2 className={styles.title}>{podcast.title}</h2>
+        <div className={styles.content}>
+          <h2 className={styles.title}>{podcast.title}</h2>
 
-        <p className={styles.seasons}>
-          {podcast.seasons} season{podcast.seasons !== 1 ? "s" : ""}
-        </p>
+          <p className={styles.seasons}>
+            {podcast.seasons} season{podcast.seasons !== 1 ? "s" : ""}
+          </p>
 
-        <div className={styles.genres}>
-          {genreNames.map((name) => (
-            <span key={name} className={styles.genreTag}>
-              {name}
-            </span>
-          ))}
+          <div className={styles.genres}>
+            {genreNames.map((name) => (
+              <span key={name} className={styles.genreTag}>
+                {name}
+              </span>
+            ))}
+          </div>
+
+          <p className={styles.updated}>{updatedDate}</p>
         </div>
-
-        <p className={styles.updated}>{updatedDate}</p>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }
