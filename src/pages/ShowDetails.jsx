@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchPodcastById } from "../api/fetchPodcasts";
+import { genreService } from "../utils/genreService";
 
 /**
  * Displays information about a selected podcast.
@@ -13,6 +14,7 @@ export default function ShowDetails() {
   const [podcast, setPodcast] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(0);
   const season = podcast?.seasons[selectedSeason];
+  const genreNames = podcast?.genres ?? [];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -69,6 +71,12 @@ export default function ShowDetails() {
       </select>
 
       <p>{podcast.description}</p>
+
+      <div>
+        {genreNames.map((genre, index) => (
+          <span key={`${genre}-${index}`}>{genre}</span>
+        ))}
+      </div>
 
       <h2>Episodes</h2>
 
