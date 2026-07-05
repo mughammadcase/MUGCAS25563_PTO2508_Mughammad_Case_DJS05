@@ -15,9 +15,16 @@ export default function ShowDetails() {
 
   const [podcast, setPodcast] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(0);
+
+  // The currently selected season based on the dropdown selection
   const season = podcast?.seasons[selectedSeason];
+
+  // Calculates the number of episodes in the currently selected season.
+  const episodeCount = season?.episodes.length ?? 0;
+
   const genreNames = podcast ? genreService.getNames(podcast.genres) : [];
   const updatedDate = podcast ? formatDate.format(podcast.updated) : "";
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -76,14 +83,6 @@ export default function ShowDetails() {
           <div className={styles.infoGrid}>
             <div>
               <h3>Genres</h3>
-
-              <div className={styles.genreList}>
-                {genreNames.map((genre) => (
-                  <span key={genre} className={styles.genreTag}>
-                    {genre}
-                  </span>
-                ))}
-              </div>
             </div>
 
             <div>
@@ -114,6 +113,21 @@ export default function ShowDetails() {
       </section>
 
       <section className={styles.content}>
+        <div className={styles.sectionHeader}>
+          <h2>Current Season</h2>
+
+          <select
+            className={styles.seasonSelect}
+            value={selectedSeason}
+            onChange={(event) => setSelectedSeason(Number(event.target.value))}
+          >
+            {podcast.seasons.map((season, index) => (
+              <option key={season.season} value={index}>
+                {`Season ${index + 1}: ${season.title}`}
+              </option>
+            ))}
+          </select>
+        </div>
         <h2>Episodes</h2>
 
         <ul>
@@ -137,6 +151,21 @@ export default function ShowDetails() {
             );
           })}
         </ul>
+      </section>
+      <section className={styles.seasonCard}>
+        <img
+          src={season.image}
+          alt={season.title}
+          className={styles.seasonImage}
+        />
+
+        <div className={styles.seasonInfo}>
+          <h3>{season.title}</h3>
+
+          <p className={styles.seasonDescription}>{season.description}</p>
+
+          <p className={styles.seasonMeta}>{season.episodes.length} Episodes</p>
+        </div>
       </section>
     </main>
   );
