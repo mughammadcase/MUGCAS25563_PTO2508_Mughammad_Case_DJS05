@@ -83,13 +83,15 @@ export default function ShowDetails() {
       <ul>
         {season.episodes.map((episode) => (
           <li key={episode.episode}>
+            <img src={season.image} alt={season.title} />
+
             <h3>
               Episode {episode.episode}: {episode.title}
             </h3>
 
             <p>
-              {episode.description.length > 150
-                ? `${episode.description.slice(0, 150)}...`
+              {episode.description.length > 180
+                ? `${episode.description.slice(0, 180)}...`
                 : episode.description}
             </p>
           </li>
