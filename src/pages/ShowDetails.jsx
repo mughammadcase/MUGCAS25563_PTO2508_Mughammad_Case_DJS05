@@ -83,8 +83,15 @@ export default function ShowDetails() {
       <ul>
         {season.episodes.map((episode) => (
           <li key={episode.episode}>
-            <h3>{episode.title}</h3>
-            <p>{episode.description}</p>
+            <h3>
+              Episode {episode.episode}: {episode.title}
+            </h3>
+
+            <p>
+              {episode.description.length > 150
+                ? `${episode.description.slice(0, 150)}...`
+                : episode.description}
+            </p>
           </li>
         ))}
       </ul>
