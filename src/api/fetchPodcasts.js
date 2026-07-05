@@ -1,17 +1,15 @@
 /**
- * Fetches podcast data from the external API.
- *
- * This function is called when the application loads and returns the full collection of podcasts used throughout the application.
+ * Fetches a single podcast by ID
  *
  * @async
- * @throws {Error} Throws an error if the request is unsuccessful.
- * @returns {Promise<Object[]>} Array of podcast objects.
+ * @param {string} id Podcast ID
+ * @returns {Promise<Object>}
  */
-export async function fetchPodcasts() {
-  const response = await fetch("https://podcast-api.netlify.app/");
+export async function fetchPodcastById(id) {
+  const response = await fetch(`https://podcast-api.netlify.app/id/${id}`);
 
   if (!response.ok) {
-    throw new Error("Failed to fetch podcasts from API");
+    throw new Error("Failed to fetch podcast");
   }
 
   return response.json();
