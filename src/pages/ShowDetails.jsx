@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchPodcastById } from "../api/fetchPodcasts";
 import { genreService } from "../utils/genreService";
+import { formatDate } from "../utils/formatDate";
+import styles from "../styles/ShowDetails.module.css";
 
 /**
  * Displays information about a selected podcast.
@@ -15,6 +17,7 @@ export default function ShowDetails() {
   const [selectedSeason, setSelectedSeason] = useState(0);
   const season = podcast?.seasons[selectedSeason];
   const genreNames = podcast ? genreService.getNames(podcast.genres) : [];
+  const updatedDate = podcast ? formatDate.format(podcast.updated) : "";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -43,64 +46,84 @@ export default function ShowDetails() {
   }
 
   return (
-    <main>
-      <h1>{podcast.title}</h1>
+    <main className={styles.page}>
+      <section className={styles.summaryCard}>
+        <img
+          src={podcast.image}
+          alt={podcast.title}
+          className={styles.coverImage}
+        />
 
-      <img src={podcast.image} alt={podcast.title} width="300" />
+        <div className={styles.summaryContent}>
+          <h1>{podcast.title}</h1>
 
-      <p>
-        <strong>Total Seasons:</strong> {podcast.seasons.length}
-      </p>
+          <p className={styles.description}>{podcast.description}</p>
 
-      <p>
-        <strong>Last updated:</strong>{" "}
-        {new Date(podcast.updated).toLocaleDateString()}
-      </p>
+          <div className={styles.infoGrid}>
+            <div>
+              <h3>Genres</h3>
 
-      <h2>Seasons</h2>
+              <div className={styles.genreList}>
+                {genreNames.map((genre) => (
+                  <span key={genre} className={styles.genreTag}>
+                    {genre}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-      <select
-        value={selectedSeason}
-        onChange={(event) => setSelectedSeason(Number(event.target.value))}
-      >
-        {podcast.seasons.map((season, index) => (
-          <option key={season.season} value={index}>
-            {season.title}
-          </option>
-        ))}
-      </select>
+            <div>
+              <h3>Last Updated</h3>
 
-      <p>{podcast.description}</p>
+              <p>{updatedDate}</p>
+            </div>
 
-      <div>
-        {genreNames.map((genre, index) => (
-          <span key={`${genre}-${index}`}>{genre}</span>
-        ))}
-      </div>
+            <div>
+              <h3>Total Seasons</h3>
 
-      <h2>Episodes</h2>
+              <p>{podcast.seasons.length} Seasons</p>
+            </div>
 
-      <ul>
-        {season.episodes.map((episode) => {
-          const description = episode.description || "";
-
-          return (
-            <li key={episode.episode}>
-              <img src={season.image} alt={season.title} />
-
-              <h3>
-                Episode {episode.episode}: {episode.title}
-              </h3>
+            <div>
+              <h3>Total Episodes</h3>
 
               <p>
-                {description.length > 180
-                  ? `${description.slice(0, 180)}...`
-                  : description || "No description available."}
+                {podcast.seasons.reduce(
+                  (total, season) => total + season.episodes.length,
+                  0,
+                )}{" "}
+                Episodes
               </p>
-            </li>
-          );
-        })}
-      </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.content}>
+        <h2>Episodes</h2>
+
+        <ul>
+          {season.episodes.map((episode) => {
+            const description = episode.description || "";
+
+            return (
+              <li key={episode.episode}>
+                <img src={season.image} alt={season.title} />
+
+                <h3>
+                  Episode {episode.episode}: {episode.title}
+                </h3>
+
+                <p>
+                  {description.length > 180
+                    ? `${description.slice(0, 180)}...`
+                    : description || "No description available."}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
     </main>
   );
 }
