@@ -6,7 +6,7 @@ import { formatDate } from "../utils/formatDate";
 import styles from "../styles/ShowDetails.module.css";
 
 /**
- * Displays information about a selected podcast.
+ * Displays information about a selected podcast, including its summary, season information, and episodes.
  *
  * @returns {JSX.Element}
  */
@@ -15,16 +15,6 @@ export default function ShowDetails() {
 
   const [podcast, setPodcast] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(0);
-
-  // The currently selected season based on the dropdown selection
-  const season = podcast?.seasons[selectedSeason];
-
-  // Calculates the number of episodes in the currently selected season.
-  const episodeCount = season?.episodes.length ?? 0;
-
-  const genreNames = podcast ? genreService.getNames(podcast.genres) : [];
-  const updatedDate = podcast ? formatDate.format(podcast.updated) : "";
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -43,6 +33,20 @@ export default function ShowDetails() {
 
     loadPodcast();
   }, [id]);
+
+  // The currently selected season based on the dropdown selection.
+  const season = podcast?.seasons[selectedSeason];
+
+  const genreNames = podcast ? genreService.getNames(podcast.genres) : [];
+  const updatedDate = podcast ? formatDate.format(podcast.updated) : "";
+
+  // Calculates the total number of episodes across every season.
+  const totalEpisodes = podcast
+    ? podcast.seasons.reduce(
+        (total, season) => total + season.episodes.length,
+        0,
+      )
+    : 0;
 
   if (loading) {
     return (
@@ -83,30 +87,29 @@ export default function ShowDetails() {
           <div className={styles.infoGrid}>
             <div>
               <h3>Genres</h3>
+
+              <div className={styles.genreList}>
+                {genreNames.map((genre) => (
+                  <span key={genre} className={styles.genreTag}>
+                    {genre}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div>
               <h3>Last Updated</h3>
-
               <p>{updatedDate}</p>
             </div>
 
             <div>
               <h3>Total Seasons</h3>
-
               <p>{podcast.seasons.length} Seasons</p>
             </div>
 
             <div>
               <h3>Total Episodes</h3>
-
-              <p>
-                {podcast.seasons.reduce(
-                  (total, season) => total + season.episodes.length,
-                  0,
-                )}{" "}
-                Episodes
-              </p>
+              <p>{totalEpisodes} Episodes</p>
             </div>
           </div>
         </div>
@@ -128,44 +131,48 @@ export default function ShowDetails() {
             ))}
           </select>
         </div>
-        <h2>Episodes</h2>
 
-        <ul>
+        <section className={styles.seasonCard}>
+          <img
+            src={season.image}
+            alt={season.title}
+            className={styles.seasonImage}
+          />
+
+          <div className={styles.seasonInfo}>
+            <h3>{season.title}</h3>
+
+            <p className={styles.seasonDescription}>{season.description}</p>
+          </div>
+        </section>
+
+        <ul className={styles.episodeGrid}>
           {season.episodes.map((episode) => {
             const description = episode.description || "";
 
             return (
-              <li key={episode.episode}>
-                <img src={season.image} alt={season.title} />
+              <li key={episode.episode} className={styles.episodeCard}>
+                <img
+                  src={season.image}
+                  alt={season.title}
+                  className={styles.episodeImage}
+                />
 
-                <h3>
-                  Episode {episode.episode}: {episode.title}
-                </h3>
+                <div className={styles.episodeContent}>
+                  <h3>
+                    Episode {episode.episode}: {episode.title}
+                  </h3>
 
-                <p>
-                  {description.length > 180
-                    ? `${description.slice(0, 180)}...`
-                    : description || "No description available."}
-                </p>
+                  <p>
+                    {description.length > 200
+                      ? `${description.slice(0, 200)}...`
+                      : description || "No description available."}
+                  </p>
+                </div>
               </li>
             );
           })}
         </ul>
-      </section>
-      <section className={styles.seasonCard}>
-        <img
-          src={season.image}
-          alt={season.title}
-          className={styles.seasonImage}
-        />
-
-        <div className={styles.seasonInfo}>
-          <h3>{season.title}</h3>
-
-          <p className={styles.seasonDescription}>{season.description}</p>
-
-          <p className={styles.seasonMeta}>{season.episodes.length} Episodes</p>
-        </div>
       </section>
     </main>
   );
