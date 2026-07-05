@@ -14,7 +14,7 @@ export default function ShowDetails() {
   const [podcast, setPodcast] = useState(null);
   const [selectedSeason, setSelectedSeason] = useState(0);
   const season = podcast?.seasons[selectedSeason];
-  const genreNames = podcast?.genres ?? [];
+  const genreNames = podcast ? genreService.getNames(podcast.genres) : [];
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -81,21 +81,25 @@ export default function ShowDetails() {
       <h2>Episodes</h2>
 
       <ul>
-        {season.episodes.map((episode) => (
-          <li key={episode.episode}>
-            <img src={season.image} alt={season.title} />
+        {season.episodes.map((episode) => {
+          const description = episode.description || "";
 
-            <h3>
-              Episode {episode.episode}: {episode.title}
-            </h3>
+          return (
+            <li key={episode.episode}>
+              <img src={season.image} alt={season.title} />
 
-            <p>
-              {episode.description.length > 180
-                ? `${episode.description.slice(0, 180)}...`
-                : episode.description}
-            </p>
-          </li>
-        ))}
+              <h3>
+                Episode {episode.episode}: {episode.title}
+              </h3>
+
+              <p>
+                {description.length > 180
+                  ? `${description.slice(0, 180)}...`
+                  : description || "No description available."}
+              </p>
+            </li>
+          );
+        })}
       </ul>
     </main>
   );
