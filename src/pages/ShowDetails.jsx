@@ -11,6 +11,7 @@ export default function ShowDetails() {
   const { id } = useParams();
 
   const [podcast, setPodcast] = useState(null);
+  const [selectedSeason, setSelectedSeason] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,6 +20,7 @@ export default function ShowDetails() {
       try {
         const data = await fetchPodcastById(id);
         setPodcast(data);
+        setSelectedSeason(0);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -54,11 +56,16 @@ export default function ShowDetails() {
 
       <h2>Seasons</h2>
 
-      <ul>
-        {podcast.seasons.map((season) => (
-          <li key={season.season}>{season.title}</li>
+      <select
+        value={selectedSeason}
+        onChange={(event) => setSelectedSeason(Number(event.target.value))}
+      >
+        {podcast.seasons.map((season, index) => (
+          <option key={season.season} value={index}>
+            {season.title}
+          </option>
         ))}
-      </ul>
+      </select>
 
       <p>{podcast.description}</p>
     </main>
