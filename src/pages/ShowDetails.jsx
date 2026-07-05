@@ -38,11 +38,25 @@ export default function ShowDetails() {
   }, [id]);
 
   if (loading) {
-    return <p>Loading podcast...</p>;
+    return (
+      <main className={styles.page}>
+        <section className={styles.messageContainer} role="status">
+          <div className={styles.spinner}></div>
+          <p>Loading podcast...</p>
+        </section>
+      </main>
+    );
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <main className={styles.page}>
+        <section className={styles.messageContainer} role="alert">
+          <h2>Unable to load podcast</h2>
+          <p>{error}</p>
+        </section>
+      </main>
+    );
   }
 
   return (

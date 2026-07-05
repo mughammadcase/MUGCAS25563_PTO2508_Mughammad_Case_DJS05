@@ -65,6 +65,54 @@
   margin-top: 2rem;
 }
 
+.messageContainer {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  text-align: center;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.messageContainer h2 {
+  font-size: 1.4rem;
+}
+
+.messageContainer p {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.messageContainer .errorMessage {
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.spinner {
+  width: 2.75rem;
+  height: 2.75rem;
+
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 768px) {
   .summaryCard {
     grid-template-columns: 1fr;
