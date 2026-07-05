@@ -52,6 +52,14 @@ export default function ShowDetails() {
         {new Date(podcast.updated).toLocaleDateString()}
       </p>
 
+      <h2>Seasons</h2>
+
+      <ul>
+        {podcast.seasons.map((season) => (
+          <li key={season.season}>{season.title}</li>
+        ))}
+      </ul>
+
       <p>{podcast.description}</p>
     </main>
   );
