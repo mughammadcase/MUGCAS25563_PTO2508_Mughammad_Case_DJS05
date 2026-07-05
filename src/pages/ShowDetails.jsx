@@ -74,6 +74,17 @@ export default function ShowDetails() {
     );
   }
 
+  if (!podcast) {
+    return (
+      <main className={styles.page}>
+        <section className={styles.messageContainer}>
+          <h2>Podcast not found</h2>
+          <p>This podcast could not be loaded.</p>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className={styles.page}>
       {/* Podcast Summary Card */}
