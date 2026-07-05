@@ -43,6 +43,15 @@ export default function ShowDetails() {
 
       <img src={podcast.image} alt={podcast.title} width="300" />
 
+      <p>
+        <strong>Total Seasons:</strong> {podcast.seasons.length}
+      </p>
+
+      <p>
+        <strong>Last updated:</strong>{" "}
+        {new Date(podcast.updated).toLocaleDateString()}
+      </p>
+
       <p>{podcast.description}</p>
     </main>
   );
